@@ -1,0 +1,88 @@
+var API_KEY = 'API KEY CODE';
+var BASE_URL = 'https://www.asaas.com/api/v3/';
+
+function getMonthlyTotalForFilteredValues(year, month) {
+    if (month === undefined || month < 1 || month > 12) {
+        Logger.log('Error: month is undefined or out of range.');
+        return 0;
+    }
+
+    var startDate = year + '-' + (month < 10 ? '0' + month : month) + '-01';
+    var endDate = year + '-' + (month < 10 ? '0' + month : month) + '-' + getLastDayOfMonth(year, month);
+
+    var totalValue = 0;
+    var offset = 0;
+    var limit = 100;
+    var hasMore = true;
+
+    Logger.log('Fetching data for year: ' + year + ', month: ' + month + ' (' + startDate + ' to ' + endDate + ')');
+
+    while (hasMore) {
+        var response = fetchPayments(startDate, endDate, offset, limit);
+        if (!response) {
+            Logger.log('Error fetching data for month: ' + month);
+            return 0;
+        }
+
+        var data = JSON.parse(response.getContentText());
+
+        data.data.forEach(function(payment) {
+            // Garantindo que só consideramos os pagamentos dentro do intervalo correto
+            var paymentDate = payment.dueDate.split("T")[0];
+            if (paymentDate >= startDate && paymentDate <= endDate) {
+                Logger.log('Year: ' + year + ', Month: ' + month + ', Payment ID: ' + payment.id + ', Value: ' + payment.value);
+                totalValue += payment.value;
+            }
+        });
+
+        offset += limit;
+        hasMore = data.hasMore;
+    }
+
+    Logger.log('Total for month ' + month + ': ' + totalValue.toFixed(2));
+    return totalValue;
+}
+
+function fetchPayments(startDate, endDate, offset, limit) {
+    var url = BASE_URL + 'payments?filters=dueDate[gte]:' + startDate + '&filters=dueDate[lte]:' + endDate + '&limit=' + limit + '&offset=' + offset;
+    var options = {
+        'method': 'get',
+        'headers': {
+            'access_token': API_KEY
+        }
+    };
+    try {
+        var response = UrlFetchApp.fetch(url, options);
+        if (response.getResponseCode() !== 200) {
+            throw new Error('Request failed with response code ' + response.getResponseCode());
+        }
+        return response;
+    } catch (e) {
+        Logger.log('Error fetching data for the range: ' + startDate + ' to ' + endDate + ', Error: ' + e);
+        return null;
+    }
+}
+
+function getLastDayOfMonth(year, month) {
+    return new Date(year, month, 0).getDate();
+}
+
+function updateMonthlyForecast2024() {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('4. KPIs');
+    var startCell = 'D10'; // Célula inicial para os resultados
+    var startColumn = 4; // Coluna D corresponde a 4
+    var startRow = 10; // Linha 10
+    var year = new Date().getFullYear(); // Define o ano atual com base no sistema do computador
+    var monthlyForecast = [];
+
+    for (var month = 1; month <= 12; month++) {
+        var total = getMonthlyTotalForFilteredValues(year, month);
+        monthlyForecast.push(total);
+    }
+    
+    Logger.log('Forecast ' + year + ': ' + monthlyForecast.join(','));
+
+    // Inserir os valores nas células, preservando a formatação
+    var range = sheet.getRange(startRow, startColumn, 1, monthlyForecast.length);
+    range.setValues([monthlyForecast]);
+}
