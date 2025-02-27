@@ -1,0 +1,127 @@
+= Table.AddColumn(
+    #"Colunas Renomeadas2", 
+    "Célula", 
+    each 
+        if [Saving Contrato.Número do Contrato] <> null then 
+            "Contratos & Capex" 
+        else 
+            if [Comprador] = "DFONSECA" then 
+                "Operacionais" 
+            else 
+                if [Comprador] = "RPERDONE" then 
+                    "Contratos & Capex" 
+                else 
+                    if [Comprador] = "JAZAMBUJA" then 
+                        "Contratos & Capex" 
+                    else 
+                        if [Comprador] = "MMELO" then 
+                            "Contratos & Capex" 
+                        else 
+                            if [Comprador] = "GGOUVEIA" then 
+                                "Operacionais" 
+                            else 
+                                if [Comprador] = "MDSILVA" then 
+                                    "Operacionais" 
+                                else 
+                                    if [Comprador] = "PLOPES" then 
+                                        "Operacionais" 
+                                    else 
+                                        if [Comprador] = "GVIRGOLINO" then 
+                                            "Operacionais" 
+                                        else 
+                                            if Date.Month([Data do documento de compra]) > 6 
+                                                and Date.Year([Data do documento de compra]) > 2023 
+                                                and [Comprador] = "RARAUJO" then 
+                                                "Operacionais" 
+                                            else 
+                                                if [Comprador] = "RARAUJO" then 
+                                                    "Contratos & Capex" 
+                                                else 
+                                                    if [Comprador] = "JFILHO" then 
+                                                        "Contratos & Capex" 
+                                                    else 
+                                                        if [Comprador] = "TALMEIDA" then 
+                                                            "Contratos & Capex" 
+                                                        else 
+                                                            if Text.StartsWith([Comprador], "JVALE") then 
+                                                                "Operacionais" 
+                                                            else 
+                                                                if Text.StartsWith([Comprador], "SESTEVES") then 
+                                                                    "Operacionais" 
+                                                                else 
+                                                                    if Date.Month([Data do documento de compra]) > 6 
+                                                                        and Date.Year([Data do documento de compra]) > 2023 
+                                                                        and [Comprador] = "RPINTO" then 
+                                                                        "Operacionais" 
+                                                                    else 
+                                                                        if [Comprador] = "RPINTO" then 
+                                                                            "Contratos & Capex" 
+                                                                        else 
+                                                                            if Text.StartsWith([Comprador], "GSORIANO") then 
+                                                                                "Contratos & Capex" 
+                                                                            else 
+                                                                                if [Comprador] = "BBSILVA" then 
+                                                                                    "Operacionais" 
+                                                                                else 
+                                                                                    if Text.StartsWith([Comprador], "KGONCALVES") then 
+                                                                                        "Contratos & Capex" 
+                                                                                    else 
+                                                                                        if [Comprador] = "GROLIVEIRA" then 
+                                                                                            "Operacionais" 
+                                                                                        else 
+                                                                                            if [Comprador] = "CVARELA" then 
+                                                                                                "Operacionais" 
+                                                                                            else 
+                                                                                                if [Comprador] = "MAMARAL" then 
+                                                                                                    "Operacionais" 
+                                                                                                else 
+                                                                                                    if [Comprador] = "MCORREIA" then 
+                                                                                                        "Contratos & Capex" 
+                                                                                                    else 
+                                                                                                        if [Comprador] = "ISGSANTOS" then 
+                                                                                                            "Operacionais" 
+                                                                                                        else 
+                                                                                                            if [Comprador] = "VPIRES" then 
+                                                                                                                "Contratos & Capex" 
+                                                                                                            else 
+                                                                                                                if [Comprador] = "RCAMPOS" then 
+                                                                                                                    "Contratos & Capex" 
+                                                                                                                else 
+                                                                                                                    if [Comprador] = "LPRUDENCIO" then 
+                                                                                                                        "Contratos & Capex" 
+                                                                                                                    else 
+                                                                                                                        if [Comprador] = "KCHAVES" then 
+                                                                                                                            "Contratos & Capex" 
+                                                                                                                        else 
+                                                                                                                            if [Comprador] = "LMATTOS" then 
+                                                                                                                                "Contratos & Capex" 
+                                                                                                                            else 
+                                                                                                                                if [Comprador] = "MOCORREIA" then 
+                                                                                                                                    "Contratos & Capex" 
+                                                                                                                                else 
+                                                                                                                                    if [Comprador] = "NFERREIRA" then 
+                                                                                                                                        "Operacionais" 
+                                                                                                                                    else 
+                                                                                                                                        if [Comprador] = "ISSANTOS" then 
+                                                                                                                                            "Operacionais" 
+                                                                                                                                        else 
+                                                                                                                                            if [Comprador] = "MAAMARAL" then 
+                                                                                                                                                "Operacionais" 
+                                                                                                                                            else 
+                                                                                                                                                if [Comprador] = "JOVALE" then 
+                                                                                                                                                    "Operacionais" 
+                                                                                                                                                else 
+                                                                                                                                                    if [Comprador] = "LESPINDOLA" then 
+                                                                                                                                                        "Contratos & Capex" 
+                                                                                                                                                    else 
+                                                                                                                                                        if List.Contains(ListaContratos, [ajuste grupo]) then 
+                                                                                                                                                            "Contratos & Capex" 
+                                                                                                                                                        else 
+                                                                                                                                                            if List.Contains(ListaOperacoes, [ajuste grupo]) then 
+                                                                                                                                                                "Operacionais" 
+                                                                                                                                                            else 
+                                                                                                                                                                "ANALISAR"
+
+
+
+)
